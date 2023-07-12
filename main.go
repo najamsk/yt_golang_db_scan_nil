@@ -28,6 +28,7 @@ func main() {
 	// Fiber setup and routes starting
 	app := fiber.New()
 
+	// handler that has nil value as last col
 	app.Get("/", func(c *fiber.Ctx) error {
 		res, err := queryScanJsonErrorLast(db)
 		if err != nil {
@@ -66,6 +67,7 @@ type Warrior struct {
 	IsActive  bool   `json:"isActive"`
 }
 
+// called by error handler
 func queryScanJsonError(db *sql.DB) ([]byte, error) {
 	res := []Warrior{}
 	q := "select first_name,last_name, teacher, is_active from warriors"
@@ -88,6 +90,7 @@ func queryScanJsonError(db *sql.DB) ([]byte, error) {
 	return json.MarshalIndent(res, "", "\t")
 }
 
+// called by root handler
 func queryScanJsonErrorLast(db *sql.DB) ([]byte, error) {
 	res := []Warrior{}
 	q := "select first_name, teacher, is_active, last_name from warriors"
